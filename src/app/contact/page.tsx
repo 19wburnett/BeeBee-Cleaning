@@ -6,6 +6,7 @@ import { SlideUp, SlideInLeft, SlideInRight } from "@/components/Animations";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [selectedService, setSelectedService] = useState("");
   const [addressVal, setAddressVal] = useState("");
   const [addressResults, setAddressResults] = useState<any[]>([]);
   const [isSearchingAddress, setIsSearchingAddress] = useState(false);
@@ -61,6 +62,12 @@ export default function ContactPage() {
       phone: formData.get("phone"),
       address: addressVal,
       service: formData.get("service"),
+      cleaningType: formData.get("cleaningType"),
+      squareFootage: formData.get("squareFootage"),
+      floors: formData.get("floors"),
+      bathrooms: formData.get("bathrooms"),
+      kitchens: formData.get("kitchens"),
+      rooms: formData.get("rooms"),
       message: formData.get("message"),
     };
 
@@ -74,6 +81,7 @@ export default function ContactPage() {
       if (response.ok) {
         setStatus("success");
         (e.target as HTMLFormElement).reset();
+        setSelectedService("");
         setAddressVal("");
       } else {
         setStatus("error");
@@ -207,6 +215,8 @@ export default function ContactPage() {
                     id="service" 
                     name="service" 
                     required
+                    value={selectedService}
+                    onChange={(e) => setSelectedService(e.target.value)}
                     className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
                   >
                     <option value="">Select a service...</option>
@@ -216,6 +226,84 @@ export default function ContactPage() {
                     <option value="Construction Cleaning">Construction Cleaning</option>
                     <option value="Other">Other</option>
                   </select>
+                </div>
+
+                {selectedService === "Home Cleaning" && (
+                  <div className="space-y-2">
+                    <label htmlFor="cleaningType" className="block font-medium">Type of Cleaning *</label>
+                    <select 
+                      id="cleaningType" 
+                      name="cleaningType" 
+                      required
+                      className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                    >
+                      <option value="">Select cleaning type...</option>
+                      <option value="Regular Cleaning">Regular Cleaning</option>
+                      <option value="Deep Cleaning">Deep Cleaning</option>
+                    </select>
+                  </div>
+                )}
+
+                {/* Pricing info - helps us give you a better quote */}
+                <div className="border-t border-gray-200 dark:border-gray-700 pt-6 mt-2">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">Help us give you an accurate quote (optional)</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label htmlFor="squareFootage" className="block font-medium">Square Footage</label>
+                      <input 
+                        type="number" 
+                        id="squareFootage" 
+                        name="squareFootage" 
+                        min="1"
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                        placeholder="e.g. 2500"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="floors" className="block font-medium">Number of Floors</label>
+                      <input 
+                        type="number" 
+                        id="floors" 
+                        name="floors" 
+                        min="1"
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                        placeholder="e.g. 2"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="bathrooms" className="block font-medium">Number of Bathrooms</label>
+                      <input 
+                        type="number" 
+                        id="bathrooms" 
+                        name="bathrooms" 
+                        min="0"
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                        placeholder="e.g. 3"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="kitchens" className="block font-medium">Number of Kitchens</label>
+                      <input 
+                        type="number" 
+                        id="kitchens" 
+                        name="kitchens" 
+                        min="0"
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                        placeholder="e.g. 1"
+                      />
+                    </div>
+                    <div className="space-y-2 sm:col-span-2">
+                      <label htmlFor="rooms" className="block font-medium">Number of Rooms</label>
+                      <input 
+                        type="number" 
+                        id="rooms" 
+                        name="rooms" 
+                        min="0"
+                        className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#121212] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-beebee-yellow focus:border-transparent transition-all"
+                        placeholder="e.g. 6"
+                      />
+                    </div>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
