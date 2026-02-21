@@ -2,8 +2,14 @@ import { Star, Quote } from "lucide-react";
 import { SlideUp, StaggerContainer, StaggerItem } from "@/components/Animations";
 
 export const metadata = {
-  title: "Reviews | BeeBee Cleaning",
-  description: "Read what our satisfied customers have to say about BeeBee Cleaning.",
+  title: "Customer Reviews | Trusted Cleaning Services",
+  description: "Read 5-star reviews from our satisfied clients across Utah. See why BeeBee Cleaning is trusted for home, commercial, and construction cleaning.",
+  keywords: ["cleaning service reviews Utah", "BeeBee Cleaning reviews", "best cleaners Salt Lake City", "top rated cleaning Provo"],
+  openGraph: {
+    title: "Customer Reviews | BeeBee Cleaning",
+    description: "Read 5-star reviews from our satisfied clients across Utah.",
+    url: "https://beebeecleaningservices.com/reviews",
+  }
 };
 
 export default function ReviewsPage() {

@@ -4,8 +4,14 @@ import { ArrowRight, HardHat, Home, Building2, Truck } from "lucide-react";
 import { FadeIn, SlideUp, SlideInLeft, SlideInRight, StaggerContainer, StaggerItem, ScaleIn } from "@/components/Animations";
 
 export const metadata = {
-  title: "Services | BeeBee Cleaning",
-  description: "Explore our professional cleaning services: Construction, Home, Move-In/Out, and Commercial Cleaning.",
+  title: "Cleaning Services | Construction, Home & Commercial",
+  description: "Explore BeeBee Cleaning's professional services: Construction Cleanup, Residential Home Cleaning, Move-In/Out Cleaning, and Commercial Janitorial Services.",
+  keywords: ["construction cleaning", "residential cleaning", "move in cleaning", "move out cleaning", "commercial cleaning Utah", "janitorial services"],
+  openGraph: {
+    title: "Cleaning Services | BeeBee Cleaning",
+    description: "Professional Construction, Home, Move-In/Out, and Commercial Cleaning Services.",
+    url: "https://beebeecleaningservices.com/services",
+  }
 };
 
 export default function ServicesPage() {

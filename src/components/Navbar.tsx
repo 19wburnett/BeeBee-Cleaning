@@ -59,6 +59,9 @@ export default function Navbar() {
             <Link href="/reviews" className="text-gray-900 dark:text-gray-200 hover:text-beebee-yellow dark:hover:text-beebee-yellow px-3 py-2 text-sm font-medium transition-colors">
               Reviews
             </Link>
+            <Link href="/blog" className="text-gray-900 dark:text-gray-200 hover:text-beebee-yellow dark:hover:text-beebee-yellow px-3 py-2 text-sm font-medium transition-colors">
+              Blog
+            </Link>
             <Link href="/contact" className="bg-beebee-yellow text-black hover:bg-yellow-500 px-4 py-2 rounded-md text-sm font-bold transition-transform hover:scale-105 active:scale-95 shadow-sm hover:shadow-md">
               Get a Quote
             </Link>
@@ -117,6 +120,13 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 Reviews
+              </Link>
+              <Link 
+                href="/blog" 
+                className="block px-3 py-2 text-base font-medium text-gray-900 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-900 hover:text-beebee-yellow transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                Blog
               </Link>
               <Link 
                 href="/contact" 

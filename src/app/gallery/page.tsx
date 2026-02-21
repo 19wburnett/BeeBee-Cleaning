@@ -2,8 +2,14 @@ import Image from "next/image";
 import { SlideUp, StaggerContainer, StaggerItem } from "@/components/Animations";
 
 export const metadata = {
-  title: "Gallery | BeeBee Cleaning",
-  description: "View our gallery of past cleaning projects from Salt Lake City to Santaquin, UT.",
+  title: "Cleaning Project Gallery | Before & After Transformations",
+  description: "View BeeBee Cleaning's gallery of past cleaning projects from Salt Lake City to Santaquin, UT. See our spotless before and after results.",
+  keywords: ["cleaning gallery", "cleaning before and after", "house cleaning photos", "commercial cleaning gallery", "BeeBee Cleaning portfolio"],
+  openGraph: {
+    title: "Cleaning Project Gallery | BeeBee Cleaning",
+    description: "View our gallery of past cleaning projects from Salt Lake City to Santaquin, UT.",
+    url: "https://beebeecleaningservices.com/gallery",
+  }
 };
 
 export default function GalleryPage() {
