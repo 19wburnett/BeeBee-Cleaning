@@ -3,9 +3,15 @@
 import { useState, useEffect, useRef } from "react";
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, Search } from "lucide-react";
 import { SlideUp, SlideInLeft, SlideInRight } from "@/components/Animations";
+import {
+  calculateQuoteFromForm,
+  formatQuoteRange,
+  type QuoteResult,
+} from "@/lib/quoteCalculator";
 
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [lastQuoteResult, setLastQuoteResult] = useState<QuoteResult | null>(null);
   const [selectedService, setSelectedService] = useState("");
   const [addressVal, setAddressVal] = useState("");
   const [addressResults, setAddressResults] = useState<any[]>([]);
@@ -54,21 +60,40 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("submitting");
-    
+
     const formData = new FormData(e.currentTarget);
+    const service = String(formData.get("service") ?? "");
+    const cleaningType = formData.get("cleaningType") as string | null;
+    const squareFootage = formData.get("squareFootage");
+    const bathrooms = formData.get("bathrooms");
+    const rooms = formData.get("rooms");
+
+    const quoteResult = calculateQuoteFromForm(
+      service,
+      cleaningType,
+      squareFootage,
+      bathrooms,
+      rooms
+    );
+    setLastQuoteResult(quoteResult);
+
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
       address: addressVal,
-      service: formData.get("service"),
-      cleaningType: formData.get("cleaningType"),
+      service,
+      cleaningType,
       squareFootage: formData.get("squareFootage"),
       floors: formData.get("floors"),
-      bathrooms: formData.get("bathrooms"),
+      bathrooms,
       kitchens: formData.get("kitchens"),
-      rooms: formData.get("rooms"),
+      rooms,
       message: formData.get("message"),
+      ...(quoteResult.canEstimate && {
+        estimatedMin: quoteResult.min,
+        estimatedMax: quoteResult.max,
+      }),
     };
 
     try {
@@ -97,7 +122,7 @@ export default function ContactPage() {
       <div className="bg-black text-white py-20 text-center">
         <div className="max-w-4xl mx-auto px-4">
           <SlideUp>
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-6">Contact <span className="text-beebee-yellow">Us</span></h1>
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-6">Get a <span className="text-beebee-yellow">Quote</span></h1>
           </SlideUp>
           <SlideUp delay={0.2}>
             <p className="text-xl text-gray-300">
@@ -112,18 +137,32 @@ export default function ContactPage() {
           
           {/* Contact Form */}
           <SlideInLeft>
-            <h2 className="text-3xl font-bold mb-8">Send Us a Message</h2>
+            <h2 className="text-3xl font-bold mb-8">Request Your Quote</h2>
             
             {status === "success" ? (
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 rounded-lg p-8 text-center">
                 <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-500" />
-                <h3 className="text-2xl font-bold mb-2">Message Sent!</h3>
-                <p>Thank you for reaching out. We will get back to you within 24 hours with your quote.</p>
-                <button 
-                  onClick={() => setStatus("idle")}
+                <h3 className="text-2xl font-bold mb-2">Thank You!</h3>
+                {lastQuoteResult?.canEstimate ? (
+                  <>
+                    <p className="mb-2">
+                      Based on your information, we estimate{" "}
+                      <strong>{formatQuoteRange(lastQuoteResult.min, lastQuoteResult.max)}</strong>.
+                    </p>
+                    <p className="mb-4">We will reach out within 24 hours to confirm your quote.</p>
+                    <p className="text-sm opacity-90">Final quote may vary based on in-person assessment.</p>
+                  </>
+                ) : (
+                  <p>We will review your request and reach out within 24 hours with a custom quote.</p>
+                )}
+                <button
+                  onClick={() => {
+                    setStatus("idle");
+                    setLastQuoteResult(null);
+                  }}
                   className="mt-6 text-green-700 dark:text-green-400 font-bold underline"
                 >
-                  Send another message
+                  Request another quote
                 </button>
               </div>
             ) : (
@@ -328,7 +367,7 @@ export default function ContactPage() {
                   disabled={status === "submitting"}
                   className="w-full bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 disabled:bg-gray-400 dark:disabled:bg-gray-600 px-8 py-4 rounded-md text-lg font-bold transition-transform hover:scale-[1.02] active:scale-95 flex items-center justify-center shadow-lg"
                 >
-                  {status === "submitting" ? "Sending..." : "Submit Request"}
+                  {status === "submitting" ? "Submitting..." : "Request My Quote"}
                   {status !== "submitting" && <Send className="ml-2 h-5 w-5" />}
                 </button>
               </form>

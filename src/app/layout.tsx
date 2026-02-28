@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import ConditionalShell from "@/components/ConditionalShell";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
@@ -91,7 +90,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -164,10 +162,7 @@ export default function RootLayout({
               })
             }}
           />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
+          <ConditionalShell>{children}</ConditionalShell>
         </ThemeProvider>
       </body>
     </html>

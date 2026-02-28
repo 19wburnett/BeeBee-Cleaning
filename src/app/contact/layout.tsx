@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Free Cleaning Quote",
-  description: "Contact BeeBee Cleaning today for a free, no-obligation quote on residential, commercial, or construction cleaning services in Utah.",
-  keywords: ["contact cleaning service", "free cleaning quote", "hire cleaners Utah", "contact BeeBee Cleaning"],
+  title: "Get a Quote | Free Cleaning Quote",
+  description: "Get a free, no-obligation quote from BeeBee Cleaning for residential, commercial, move-in/out, or construction cleaning services in Utah.",
+  keywords: ["get cleaning quote", "free cleaning quote", "hire cleaners Utah", "BeeBee Cleaning quote"],
   openGraph: {
-    title: "Contact BeeBee Cleaning | Get a Free Quote",
-    description: "Ready for a spotless space? Contact us today for a free cleaning quote.",
+    title: "Get a Quote | BeeBee Cleaning",
+    description: "Ready for a spotless space? Get your free cleaning quote today.",
     url: "https://beebeecleaningservices.com/contact",
   }
 };

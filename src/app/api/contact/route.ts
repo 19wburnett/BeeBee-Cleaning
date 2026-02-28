@@ -6,7 +6,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, address, service, cleaningType, squareFootage, floors, bathrooms, kitchens, rooms, message } = body;
+    const { name, email, phone, address, service, cleaningType, squareFootage, floors, bathrooms, kitchens, rooms, message, estimatedMin, estimatedMax } = body;
+
+    const hasEstimate = typeof estimatedMin === "number" && typeof estimatedMax === "number" && estimatedMin <= estimatedMax;
+    const estimateRow = hasEstimate
+      ? `<tr><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;"><strong>Estimated Range</strong></td><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">$${estimatedMin} – $${estimatedMax}</td></tr>`
+      : "";
 
     if (!name || !email || !phone || !service) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -44,6 +49,7 @@ export async function POST(request: Request) {
                 <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;"><strong>Service Requested</strong></td>
                 <td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">${service}${cleaningType ? ` (${cleaningType})` : ""}</td>
               </tr>
+              ${estimateRow}
               ${squareFootage ? `<tr><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;"><strong>Square Footage</strong></td><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">${squareFootage} sq ft</td></tr>` : ""}
               ${floors ? `<tr><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;"><strong>Floors</strong></td><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">${floors}</td></tr>` : ""}
               ${bathrooms ? `<tr><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;"><strong>Bathrooms</strong></td><td style="padding: 12px 0; border-bottom: 1px solid #eeeeee;">${bathrooms}</td></tr>` : ""}
@@ -74,6 +80,7 @@ export async function POST(request: Request) {
             
             <div style="background-color: #fdfdfd; border: 1px solid #eeeeee; padding: 20px; border-radius: 6px; margin-bottom: 30px;">
               <h3 style="margin-top: 0; margin-bottom: 15px; font-size: 18px; color: #020202;">Summary of your request:</h3>
+              ${hasEstimate ? `<p style="margin: 8px 0;"><strong>Estimated range:</strong> $${estimatedMin} – $${estimatedMax}</p>` : ""}
               <p style="margin: 8px 0;"><strong>Phone:</strong> ${phone}</p>
               <p style="margin: 8px 0;"><strong>Address:</strong> ${address || "Not provided"}</p>
               ${squareFootage || floors || bathrooms || kitchens || rooms ? `<p style="margin: 8px 0;"><strong>Property details:</strong> ${[squareFootage && `${squareFootage} sq ft`, floors && `${floors} floor(s)`, bathrooms && `${bathrooms} bathroom(s)`, kitchens && `${kitchens} kitchen(s)`, rooms && `${rooms} room(s)`].filter(Boolean).join(", ")}</p>` : ""}
